@@ -12,11 +12,15 @@ db.init_app(app)
 
 @app.route('/', methods = ('POST', 'GET'))
 def index():
+    if 'user' not in session:
+        return redirect(url_for('register'))
+    
     if request.method == 'POST':
         if request.form.get('create'):
             return redirect(url_for('create'))
-
-    return render_template('index.html')
+    
+    user = Users.query.filter_by(username=session['user']).first()
+    return render_template('index.html', notes = user.notes)
 
 @app.route('/register', methods = ('POST', 'GET'))
 def register():
@@ -45,7 +49,7 @@ def edit():
     if 'currently_editing' in session:
         pass
     else:
-        pass
+        return redirect(url_for('index'))
     
     return render_template('edit.html')
 
@@ -56,8 +60,7 @@ def create():
     db.session.add(note)
     db.session.commit()
     session['currently_editing'] = note.id
-    print(session['currently_editing'])
-    return redirect(url_for('index'))
+    return redirect(url_for('edit'))
     
 
 if __name__ == '__main__':

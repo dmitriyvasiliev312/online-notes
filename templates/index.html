@@ -9,5 +9,12 @@
     <form action="" method="post">
         <input type="submit" name="create" value="Создать заметку">
     </form>
+    <div class="notes-list">
+        {% for n in notes %}
+            <div class="note-thumbnail">
+                <div class="title">{{ n.title }}</div>
+            </div>
+        {% endfor %}
+    </div>
 </body>
 </html>
