@@ -9,8 +9,13 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = '1111'
 db.init_app(app)
 
+
 @app.route('/', methods = ('POST', 'GET'))
 def index():
+    if request.method == 'POST':
+        if request.form.get('create'):
+            return redirect(url_for('create'))
+
     return render_template('index.html')
 
 @app.route('/register', methods = ('POST', 'GET'))
@@ -37,7 +42,23 @@ def login():
 
 @app.route('/edit', methods = ('POST', 'GET'))
 def edit():
-    pass
+    if 'currently_editing' in session:
+        pass
+    else:
+        pass
+    
+    return render_template('edit.html')
+
+@app.route('/create', methods = ('POST', 'GET'))
+def create():
+    user = Users.query.filter_by(username=session['user']).first()
+    note = Notes(text = '', created_by = user.id)
+    db.session.add(note)
+    db.session.commit()
+    session['currently_editing'] = note.id
+    print(session['currently_editing'])
+    return redirect(url_for('index'))
+    
 
 if __name__ == '__main__':
     app.run(debug=True)
