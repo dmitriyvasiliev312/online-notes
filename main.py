@@ -13,11 +13,15 @@ db.init_app(app)
 @app.route('/', methods = ('POST', 'GET'))
 def index():
     if 'user' not in session:
-        return redirect(url_for('register'))
+        return redirect(url_for('login'))
     
     if request.method == 'POST':
         if request.form.get('create'):
             return redirect(url_for('create'))
+        else:
+           for i in request.form.keys():    #obtaining note id
+               session['currently_editing'] = i
+               return redirect(url_for('edit'))
     
     user = Users.query.filter_by(username=session['user']).first()
     return render_template('index.html', notes = user.notes)
@@ -28,6 +32,7 @@ def register():
         user = Users(username = request.form['username'], password = request.form['password'])
         db.session.add(user)
         db.session.commit()
+        return redirect(url_for('login'))
 
     return render_template('register.html')
 
@@ -46,17 +51,31 @@ def login():
 
 @app.route('/edit', methods = ('POST', 'GET'))
 def edit():
-    if 'currently_editing' in session:
-        pass
-    else:
+    if 'currently_editing' not in session:
         return redirect(url_for('index'))
     
-    return render_template('edit.html')
+    note = Notes.query.filter_by(id=session['currently_editing']).first()
+    if request.method == 'POST':
+        if request.form.get('text') and request.form.get('title'):
+            note.text = request.form.get('text')
+            note.title = request.form.get('title')
+            db.session.commit()
+            return render_template('edit.html', note = Notes(title = request.form.get('title'), text = request.form.get('text'))) #returning note with changed text and title, not to querry db again      
+        elif request.form.get('text'):
+            note.text = request.form.get('text')
+            db.session.commit()
+            return render_template('edit.html', note = Notes(title = note.title, text = request.form.get('text')))
+        elif request.form.get('title'):
+            note.title = request.form.get('title')
+            db.session.commit()
+            return render_template('edit.html', note = Notes(title = request.form.get('title'), text = note.title))
+
+    return render_template('edit.html', note = note)
 
 @app.route('/create', methods = ('POST', 'GET'))
 def create():
     user = Users.query.filter_by(username=session['user']).first()
-    note = Notes(text = '', created_by = user.id)
+    note = Notes(text = '', title = 'Новая заметка', created_by = user.id)
     db.session.add(note)
     db.session.commit()
     session['currently_editing'] = note.id

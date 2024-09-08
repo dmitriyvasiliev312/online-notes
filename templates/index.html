@@ -11,8 +11,10 @@
     </form>
     <div class="notes-list">
         {% for n in notes %}
-            <div class="note-thumbnail">
-                <div class="title">{{ n.title }}</div>
+            <div class="element">
+                <form action="" method="post">
+                    <input type="submit" value="{{ n.title }}" name="{{ n.id }}" class="note-title-button">
+                </form>
             </div>
         {% endfor %}
     </div>
