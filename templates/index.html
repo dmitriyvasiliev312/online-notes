@@ -3,20 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link type="text/css" href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet"> -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
     <title>online notes</title>
 </head>
 <body>
-    <form action="" method="post">
-        <input type="submit" name="create" value="Создать заметку">
-    </form>
-    <div class="notes-list">
-        {% for n in notes %}
-            <div class="element">
-                <form action="" method="post">
-                    <input type="submit" value="{{ n.title }}" name="{{ n.id }}" class="note-title-button">
-                </form>
-            </div>
-        {% endfor %}
+    <div class="header">
+        <div>{{ username }}</div>
+        <form action="" method="post">
+            <input type="submit" value="Выйти из аккаунта" class="button" name="logout">
+        </form>
+    </div>
+    <div class="content">
+        <form action="" method="post">
+            <input type="submit" name="create" value="Создать заметку" class="create-note-button">
+        </form>
+        <div class="notes-list">
+            {% for n in notes %}
+                <div class="element">
+                    <form action="" method="post">
+                        <input type="submit" value="{{ n.title }}" name="{{ n.id }}" class="note-title-button">
+                    </form>
+                </div>
+            {% endfor %}
+        </div>
     </div>
 </body>
 </html>

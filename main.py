@@ -18,13 +18,16 @@ def index():
     if request.method == 'POST':
         if request.form.get('create'):
             return redirect(url_for('create'))
+        if request.form.get('logout'):
+            session.pop('user')
+            return redirect(url_for('login'))
         else:
            for i in request.form.keys():    #obtaining note id
                session['currently_editing'] = i
                return redirect(url_for('edit'))
     
     user = Users.query.filter_by(username=session['user']).first()
-    return render_template('index.html', notes = user.notes)
+    return render_template('index.html', notes = user.notes, username = session['user'])
 
 @app.route('/register', methods = ('POST', 'GET'))
 def register():
@@ -39,13 +42,16 @@ def register():
 @app.route('/login', methods = ('POST', 'GET'))
 def login():
     if request.method == 'POST':
-        try:
-            user = Users.query.filter_by(username=request.form['username']).first()
-        except:
-            print('user not found')
-        if request.form['password'] == user.password:
-            session['user'] = request.form['username']
-            return redirect(url_for('index'))
+        if request.form.get('submit'):
+            try:
+                user = Users.query.filter_by(username=request.form['username']).first()
+            except:
+                print('user not found')
+            if request.form['password'] == user.password:
+                session['user'] = request.form['username']
+                return redirect(url_for('index'))
+        elif request.form.get('register'):
+            return redirect(url_for('register'))
 
     return render_template('login.html')
 
