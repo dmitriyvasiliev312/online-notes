@@ -35,7 +35,8 @@ def register():
         user = Users(username = request.form['username'], password = request.form['password'])
         db.session.add(user)
         db.session.commit()
-        return redirect(url_for('login'))
+        session['user'] = request.form['username']
+        return redirect(url_for('index'))
 
     return render_template('register.html')
 
@@ -62,6 +63,9 @@ def edit():
     
     note = Notes.query.filter_by(id=session['currently_editing']).first()
     if request.method == 'POST':
+        if request.form.get('return'):
+            session.pop('currently_editing')
+            return redirect(url_for('index'))
         if request.form.get('text') and request.form.get('title'):
             note.text = request.form.get('text')
             note.title = request.form.get('title')
