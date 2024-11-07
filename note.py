@@ -35,5 +35,9 @@ class Note():
         db.session.add(self.__note)
         db.session.commit()
 
+    def delete(self):
+        db.session.delete(self.__note)
+        db.session.commit()
+
 
             

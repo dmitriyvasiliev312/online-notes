@@ -68,6 +68,11 @@ def edit():
             session.pop('currently_editing')
             return redirect(url_for('index'))
         
+        if request.form.get('delete'):
+            session.pop('currently_editing')
+            note.delete()
+            return redirect(url_for('index'))
+        
         if request.form.get('text') or request.form.get('title'):
             note.set(title=request.form.get('title'), text=request.form.get('text'))
             return render_template('edit.html', title = note.get_title(), text = note.get_text())
