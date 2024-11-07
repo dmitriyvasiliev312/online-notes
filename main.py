@@ -1,7 +1,8 @@
 from flask import Flask, render_template, request, redirect, session, url_for
 from flask_sqlalchemy import SQLAlchemy
 from database import db
-from model import Users, Notes
+from model import Users
+from note import Note
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///main.db'
@@ -60,35 +61,25 @@ def login():
 def edit():
     if 'currently_editing' not in session:
         return redirect(url_for('index'))
-    
-    note = Notes.query.filter_by(id=session['currently_editing']).first()
+    note = Note(id=session['currently_editing'])
     if request.method == 'POST':
+
         if request.form.get('return'):
             session.pop('currently_editing')
             return redirect(url_for('index'))
-        if request.form.get('text') and request.form.get('title'):
-            note.text = request.form.get('text')
-            note.title = request.form.get('title')
-            db.session.commit()
-            return render_template('edit.html', note = Notes(title = request.form.get('title'), text = request.form.get('text'))) #returning note with changed text and title, not to querry db again      
-        elif request.form.get('text'):
-            note.text = request.form.get('text')
-            db.session.commit()
-            return render_template('edit.html', note = Notes(title = note.title, text = request.form.get('text')))
-        elif request.form.get('title'):
-            note.title = request.form.get('title')
-            db.session.commit()
-            return render_template('edit.html', note = Notes(title = request.form.get('title'), text = note.title))
-
-    return render_template('edit.html', note = note)
+        
+        if request.form.get('text') or request.form.get('title'):
+            note.set(title=request.form.get('title'), text=request.form.get('text'))
+            return render_template('edit.html', title = note.get_title(), text = note.get_text())
+        
+    return render_template('edit.html', title = note.get_title(), text = note.get_text())
 
 @app.route('/create', methods = ('POST', 'GET'))
 def create():
     user = Users.query.filter_by(username=session['user']).first()
-    note = Notes(text = '', title = 'Новая заметка', created_by = user.id)
-    db.session.add(note)
-    db.session.commit()
-    session['currently_editing'] = note.id
+    note = Note()
+    note.create(created_by=user.id)
+    session['currently_editing'] = note.get_id()
     return redirect(url_for('edit'))
     
 

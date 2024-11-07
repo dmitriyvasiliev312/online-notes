@@ -1,0 +1,24 @@
+body{
+    font-family: "Source Sans 3", sans-serif;
+    background-color: rgb(181, 181, 181);
+}
+
+.header{
+    position: fixed;
+    top: 0;
+    height: 6vh;
+    width: 100%;
+    background-color: cornflowerblue;
+    z-index: 3;
+}
+.content{
+    display: flex;
+    position: relative;
+    left: 50%;
+    top: 25%;
+    transform: translate(-50%, -50%); 
+    width: 85vw;
+    height: 100vw;
+    background-color: #ffffff;
+    z-index: 0;
+}
