@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session, url_for
+from flask import Flask, render_template, request, redirect, session, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from database import db
 from model import Users
@@ -61,6 +61,7 @@ def login():
 def edit():
     if 'currently_editing' not in session:
         return redirect(url_for('index'))
+    
     note = Note(id=session['currently_editing'])
     if request.method == 'POST':
 
@@ -68,14 +69,22 @@ def edit():
             session.pop('currently_editing')
             return redirect(url_for('index'))
         
-        if request.form.get('delete'):
+        elif request.form.get('add_user') and request.form.get('username'):     
+            user = Users.query.filter_by(username=request.form.get('username')).first()
+            if user is not None:    
+                if user not in note.get_users():        
+                    note.add_user(user)
+                    flash(f'Пользователь {user.username} добавлен.')
+            else:
+                flash('Такого пользователя не существует.')
+            
+        elif request.form.get('delete'):
             session.pop('currently_editing')
             note.delete()
             return redirect(url_for('index'))
         
-        if request.form.get('text') or request.form.get('title'):
+        elif request.form.get('text') or request.form.get('title'):
             note.set(title=request.form.get('title'), text=request.form.get('text'))
-            return render_template('edit.html', title = note.get_title(), text = note.get_text())
         
     return render_template('edit.html', title = note.get_title(), text = note.get_text())
 

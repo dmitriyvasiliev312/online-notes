@@ -1,4 +1,4 @@
-from model import Notes
+from model import Notes, Users
 from database import db
 
 class Note():
@@ -16,6 +16,9 @@ class Note():
     def get_id(self) -> int:
         return self.__note.id
 
+    def get_users(self) -> list[Users]:
+        return self.__note.added_users
+
     def set(self, title : str | None, text : str | None):
         if title is not None and text is not None:
             self.__note.title = title
@@ -24,10 +27,8 @@ class Note():
             self.__note.title = title
         elif text is not None:
             self.__note.text = text
-        if title is None and text is None:
+        else:
             return
-        print(self.__note.title)
-        print(self.__note.text)
         db.session.commit()
     
     def create(self, created_by : int):
@@ -38,6 +39,13 @@ class Note():
     def delete(self):
         db.session.delete(self.__note)
         db.session.commit()
+
+    def add_user(self, user : Users):
+        self.__note.added_users.append(user)
+        db.session.commit()
+
+
+
 
 
             

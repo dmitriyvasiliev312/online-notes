@@ -7,11 +7,24 @@
 </head>
 <body>
     <form action="" method="post">
-        <textarea name="title" cols="30" rows="1">{{ title }}</textarea>
-        <textarea name="text" cols="30" rows="10">{{ text }}</textarea>
-        <input type="submit" value="Сохранить" name="save">
-        <input type="submit" value="Назад" name="return">
-        <input type="submit" value="Удалить заметку" name="delete">
+        <p>
+            <textarea name="title" cols="30" rows="1">{{ title }}</textarea>
+        </p>
+        <p>
+            <textarea name="text" cols="30" rows="10">{{ text }}</textarea>
+        </p>
+        <p>
+            <input type="submit" value="Сохранить" name="save">
+            <input type="submit" value="Назад" name="return">
+            <input type="submit" value="Удалить заметку" name="delete">
+        </p>
+        {% for msg in get_flashed_messages() %}
+        <div class="flash">{{ msg }}</div>
+        {% endfor %}
+        <p>
+            <input type="submit" value="Добавить пользователя" name="add_user">
+            <input type="text" name="username">
+        </p>
     </form>
 </body>
 </html>
