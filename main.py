@@ -95,9 +95,8 @@ def edit():
 
 @app.route('/create', methods = ('POST', 'GET'))
 def create():
-    user = Users.query.filter_by(username=session['user']).first()
     note = Note()
-    note.create(created_by=user.id)
+    note.create(created_by=session['user_id'])
     session['currently_editing'] = note.get_id()
     return redirect(url_for('edit'))
     

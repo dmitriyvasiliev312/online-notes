@@ -4,27 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    <link type="text/css" href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet">
 </head>
 <body>
-    <form action="" method="post">
-        <p>
-            <textarea name="title" cols="30" rows="1">{{ title }}</textarea>
-        </p>
-        <p>
-            <textarea name="text" cols="30" rows="10">{{ text }}</textarea>
-        </p>
-        <p>
-            <input type="submit" value="Сохранить" name="save">
-            <input type="submit" value="Назад" name="return">
-            <input type="submit" value="Удалить заметку" name="delete">
-        </p>
-        {% for msg in get_flashed_messages() %}
-        <div class="flash">{{ msg }}</div>
-        {% endfor %}
-        <p>
-            <input type="submit" value="Добавить пользователя" name="add_user">
-            <input type="text" name="username">
-        </p>
-    </form>
+    <div class="content">
+        <form action="" method="post">
+            <div>
+                <textarea name="title" cols="30" rows="1">{{ title }}</textarea>
+            </div>
+            <div>
+                <textarea name="text" cols="30" rows="10">{{ text }}</textarea>
+            </div>
+            <div>
+                <input type="submit" value="Сохранить" name="save">
+                <input type="submit" value="Назад" name="return">
+                <input type="submit" value="Удалить заметку" name="delete">
+            </div>
+            {% for msg in get_flashed_messages() %}
+            <div class="flash">{{ msg }}</div>
+            {% endfor %}
+            <div>
+                <input type="submit" value="Добавить пользователя" name="add_user">
+                <input type="text" name="username">
+            </div>
+        </form>
+    </div>
 </body>
 </html>

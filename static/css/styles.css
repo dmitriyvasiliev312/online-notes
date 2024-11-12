@@ -1,9 +1,30 @@
 body{
     font-family: "Source Sans 3", sans-serif;
     background-color: rgb(181, 181, 181);
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; 
 }
 
+.content{
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
+    margin-top: 7%;
+}
 .header{
+    display: flex;
+    flex-direction:row;
+    background-color: white;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    height: 5vh;
+    padding-left: 2vw;
+    padding-top: 1.5vh;
+    gap: 1vw;
+}
+/* .header{
     position: fixed;
     top: 0;
     height: 6vh;
@@ -21,4 +42,4 @@ body{
     height: 100vw;
     background-color: #ffffff;
     z-index: 0;
-}
+} */

@@ -3,16 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    <link type="text/css" href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet">
     <title>online notes</title>
 </head>
 <body>
-    <form action="" method="post">
-        <div>Username:</div><input type="text" name="username" value="" required>
-        <div>Password:</div><input type="password" name="password" value="" required>
-        <p><input type="submit" value="Подтвердить" name="submit"></p>
-    </form>
-    <form action="" method="post">
-        <input type="submit" value="Создать аккаунт" name="register">
-    </form>
+    <div class="content">
+        <form action="" method="post">
+            <div>Username:</div><input type="text" name="username" value="" required>
+            <div>Password:</div><input type="password" name="password" value="" required>
+            <p><input type="submit" value="Подтвердить" name="submit"></p>
+        </form>
+        <form action="" method="post">
+            <input type="submit" value="Создать аккаунт" name="register">
+        </form>
+    </div>
 </body>
 </html>
