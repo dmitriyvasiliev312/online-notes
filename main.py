@@ -19,7 +19,7 @@ def index():
     if request.method == 'POST':
         if request.form.get('create'):
             return redirect(url_for('create'))
-        if request.form.get('logout'):
+        elif request.form.get('logout'):
             session.pop('user')
             return redirect(url_for('login'))
         else:
@@ -28,7 +28,7 @@ def index():
                return redirect(url_for('edit'))
     
     user = Users.query.filter_by(username=session['user']).first()
-    return render_template('index.html', notes = user.notes, username = session['user'])
+    return render_template('index.html', notes = user.notes, shared_notes = user.shared_notes, username = session['user'])
 
 @app.route('/register', methods = ('POST', 'GET'))
 def register():
@@ -51,6 +51,7 @@ def login():
                 print('user not found')
             if request.form['password'] == user.password:
                 session['user'] = request.form['username']
+                session['user_id'] = user.id
                 return redirect(url_for('index'))
         elif request.form.get('register'):
             return redirect(url_for('register'))
@@ -70,6 +71,8 @@ def edit():
             return redirect(url_for('index'))
         
         elif request.form.get('add_user') and request.form.get('username'):     
+            if not note.is_owner(session['user_id']):
+                return render_template('edit.html', title = note.get_title(), text = note.get_text())
             user = Users.query.filter_by(username=request.form.get('username')).first()
             if user is not None:    
                 if user not in note.get_users():        
@@ -79,6 +82,8 @@ def edit():
                 flash('Такого пользователя не существует.')
             
         elif request.form.get('delete'):
+            if not note.is_owner(session['user_id']):
+                return render_template('edit.html', title = note.get_title(), text = note.get_text())
             session.pop('currently_editing')
             note.delete()
             return redirect(url_for('index'))

@@ -44,6 +44,12 @@ class Note():
         self.__note.added_users.append(user)
         db.session.commit()
 
+    def is_owner(self, user_id : int) -> bool:
+        if self.__note.created_by == user_id:
+            return True
+        else:
+            return False
+
 
 
 

@@ -20,8 +20,19 @@
         <form action="" method="post">
             <input type="submit" name="create" value="Создать заметку" class="button">
         </form>
+        <p>Мои заметки</p>
         <div class="notes-list">
             {% for n in notes %}
+                <div class="element">
+                    <form action="" method="post">
+                        <input type="submit" value="{{ n.title }}" name="{{ n.id }}" class="note-title-button">
+                    </form>
+                </div>
+            {% endfor %}
+        </div>
+        <p>Общие заметки</p>
+        <div class="notes-list">
+            {% for n in shared_notes %}
                 <div class="element">
                     <form action="" method="post">
                         <input type="submit" value="{{ n.title }}" name="{{ n.id }}" class="note-title-button">
