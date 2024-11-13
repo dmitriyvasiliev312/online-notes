@@ -1,6 +1,6 @@
 body{
     font-family: "Source Sans 3", sans-serif;
-    background-color: rgb(181, 181, 181);
+    background-color: rgba(224, 193, 131, 0.717);
     margin: 0;
     padding: 0;
     overflow-x: hidden; 
@@ -24,22 +24,50 @@ body{
     padding-top: 1.5vh;
     gap: 1vw;
 }
-/* .header{
-    position: fixed;
-    top: 0;
-    height: 6vh;
-    width: 100%;
-    background-color: cornflowerblue;
-    z-index: 3;
+
+textarea{
+  resize: none;
+  width: 40vw;
+  border: 0;
 }
-.content{
-    display: flex;
-    position: relative;
-    left: 50%;
-    top: 25%;
-    transform: translate(-50%, -50%); 
-    width: 85vw;
-    height: 100vw;
-    background-color: #ffffff;
-    z-index: 0;
-} */
+
+button{
+  background-color: white;
+  border: 0;
+}
+
+.button{
+  background-color: white;
+  border: 0;
+}
+
+.note-text-preview {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3; 
+    overflow: hidden;     
+    max-width: 25vw;
+    color: rgb(97, 97, 97);
+    font-weight: 700;
+  }
+
+.create-note-button{
+    width: 30vw;
+    border: 0;
+    height: 5vh;
+  }
+
+.note-button{
+    width: 30vw;
+    text-align: left;
+    border: 0;
+  }
+
+.header-button{
+    background-color: rgb(232, 232, 232);
+}
+  
+.note-textarea{
+    height: 60vh;
+}
+

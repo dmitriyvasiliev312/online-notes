@@ -11,21 +11,21 @@
     <div class="content">
         <form action="" method="post">
             <div>
-                <textarea name="title" cols="30" rows="1">{{ title }}</textarea>
+                <textarea name="title" cols="30" rows="1" class="title-textarea">{{ title }}</textarea>
             </div>
             <div>
-                <textarea name="text" cols="30" rows="10">{{ text }}</textarea>
+                <textarea name="text" cols="30" rows="10" class="note-textarea">{{ text }}</textarea>
             </div>
             <div>
-                <input type="submit" value="Сохранить" name="save">
-                <input type="submit" value="Назад" name="return">
-                <input type="submit" value="Удалить заметку" name="delete">
+                <input type="submit" value="Сохранить" name="save" class="button">
+                <input type="submit" value="Назад" name="return" class="button">
+                <input type="submit" value="Удалить заметку" name="delete" class="button">
             </div>
             {% for msg in get_flashed_messages() %}
             <div class="flash">{{ msg }}</div>
             {% endfor %}
             <div>
-                <input type="submit" value="Добавить пользователя" name="add_user">
+                <input type="submit" value="Добавить пользователя" name="add_user" class="button">
                 <input type="text" name="username">
             </div>
         </form>

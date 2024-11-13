@@ -13,19 +13,22 @@
     <div class="header">
         <div>{{ username }}</div>
         <form action="" method="post">
-            <input type="submit" value="Выйти из аккаунта" class="button" name="logout">
+            <input type="submit" value="Выйти из аккаунта" class="button header-button" name="logout">
         </form>
     </div>
     <div class="content">
         <form action="" method="post">
-            <input type="submit" name="create" value="Создать заметку" class="button">
+            <input type="submit" name="create" value="Создать заметку" class="button create-note-button">
         </form>
         <p>Мои заметки</p>
         <div class="notes-list">
             {% for n in notes %}
                 <div class="element">
                     <form action="" method="post">
-                        <input type="submit" value="{{ n.title }}" name="{{ n.id }}" class="note-title-button">
+                        <button type="submit" name="{{ n.id }}" class="note-button">
+                             <h4>{{ n.title }}</h4>
+                             <div class="note-text-preview">{{ n.text }}</div>
+                        </button>
                     </form>
                 </div>
             {% endfor %}
@@ -35,7 +38,10 @@
             {% for n in shared_notes %}
                 <div class="element">
                     <form action="" method="post">
-                        <input type="submit" value="{{ n.title }}" name="{{ n.id }}" class="note-title-button">
+                        <button type="submit" name="{{ n.id }}" class="note-button">
+                            <h4>{{ n.title }}</h4>
+                            <div class="note-text-preview">{{ n.text }}</div>
+                        </button>
                     </form>
                 </div>
             {% endfor %}
