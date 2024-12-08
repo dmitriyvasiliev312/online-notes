@@ -13,30 +13,35 @@ db.init_app(app)
 
 @app.route('/', methods = ('POST', 'GET'))
 def index():
-    if 'user' not in session:
+    if 'username' not in session:
         return redirect(url_for('login'))
     
     if request.method == 'POST':
         if request.form.get('create'):
             return redirect(url_for('create'))
         elif request.form.get('logout'):
-            session.pop('user')
+            session.pop('username')
             return redirect(url_for('login'))
         else:
            for i in request.form.keys():    #obtaining note id
                session['currently_editing'] = i
                return redirect(url_for('edit'))
     
-    user = Users.query.filter_by(username=session['user']).first()
-    return render_template('index.html', notes = user.notes, shared_notes = user.shared_notes, username = session['user'])
+    user = Users.query.filter_by(username=session['username']).first()
+    return render_template('index.html', notes = user.notes, shared_notes = user.shared_notes, username = session['username'])
 
 @app.route('/register', methods = ('POST', 'GET'))
 def register():
     if request.method == 'POST':
         user = Users(username = request.form['username'], password = request.form['password'])
-        db.session.add(user)
-        db.session.commit()
-        session['user'] = request.form['username']
+        try:
+            db.session.add(user)
+            db.session.commit()
+        except:
+            flash('Такой пользователь уже существует.')
+            return render_template('register.html')
+        session['username'] = user.username
+        session['user_id'] = user.id
         return redirect(url_for('index'))
 
     return render_template('register.html')
@@ -45,12 +50,12 @@ def register():
 def login():
     if request.method == 'POST':
         if request.form.get('submit'):
-            try:
-                user = Users.query.filter_by(username=request.form['username']).first()
-            except:
-                print('user not found')
+            user = Users.query.filter_by(username=request.form['username']).first()
+            if user is None:
+                flash('Такого пользователя не существует.')
+                return render_template('login.html')
             if request.form['password'] == user.password:
-                session['user'] = request.form['username']
+                session['username'] = request.form['username']
                 session['user_id'] = user.id
                 return redirect(url_for('index'))
         elif request.form.get('register'):
@@ -75,7 +80,7 @@ def edit():
                 return render_template('edit.html', title = note.get_title(), text = note.get_text())
             user = Users.query.filter_by(username=request.form.get('username')).first()
             if user is not None:    
-                if user not in note.get_users():        
+                if user not in note.get_users() and request.form.get('username') != session['username']:        
                     note.add_user(user)
                     flash(f'Пользователь {user.username} добавлен.')
             else:

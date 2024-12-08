@@ -17,6 +17,9 @@
         <form action="" method="post">
             <input type="submit" value="Создать аккаунт" name="register">
         </form>
+        {% for msg in get_flashed_messages() %}
+        <div class="flash">{{ msg }}</div>
+        {% endfor %}
     </div>
 </body>
 </html>

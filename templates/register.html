@@ -14,6 +14,9 @@
             <div>Password:</div><input type="password" name="password" value="" required>
             <div><input type="submit" value="Регистрация"></div>
         </form>
+        {% for msg in get_flashed_messages() %}
+        <div class="flash">{{ msg }}</div>
+        {% endfor %}
     </div>
 </body>
 </html>
