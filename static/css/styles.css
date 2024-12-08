@@ -1,6 +1,5 @@
 body{
     font-family: "Source Sans 3", sans-serif;
-    background-color: rgba(224, 193, 131, 0.717);
     margin: 0;
     padding: 0;
     overflow-x: hidden; 
@@ -15,7 +14,6 @@ body{
 .header{
     display: flex;
     flex-direction:row;
-    background-color: white;
     width: 100vw;
     margin: 0;
     padding: 0;
@@ -32,12 +30,10 @@ textarea{
 }
 
 button{
-  background-color: white;
   border: 0;
 }
 
 .button{
-  background-color: white;
   border: 0;
 }
 
@@ -47,7 +43,6 @@ button{
     -webkit-line-clamp: 3; 
     overflow: hidden;     
     max-width: 25vw;
-    color: rgb(97, 97, 97);
     font-weight: 700;
   }
 
@@ -62,10 +57,6 @@ button{
     text-align: left;
     border: 0;
   }
-
-.header-button{
-    background-color: rgb(232, 232, 232);
-}
   
 .note-textarea{
     height: 60vh;

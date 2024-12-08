@@ -16,22 +16,36 @@ def index():
     if 'username' not in session:
         return redirect(url_for('login'))
     
+    if 'dark_theme' not in session:
+        session['dark_theme'] = False
+    
     if request.method == 'POST':
         if request.form.get('create'):
             return redirect(url_for('create'))
+        
+        elif request.form.get('change-theme'):
+            session['dark_theme'] = not session['dark_theme']
+            user = Users.query.filter_by(username=session['username']).first()
+            return render_template('index.html', notes = user.notes, shared_notes = user.shared_notes, username = session['username'], dark_theme = session['dark_theme'])
+        
         elif request.form.get('logout'):
             session.pop('username')
             return redirect(url_for('login'))
+        
         else:
            for i in request.form.keys():    #obtaining note id
                session['currently_editing'] = i
                return redirect(url_for('edit'))
     
     user = Users.query.filter_by(username=session['username']).first()
-    return render_template('index.html', notes = user.notes, shared_notes = user.shared_notes, username = session['username'])
+    return render_template('index.html', notes = user.notes, shared_notes = user.shared_notes, username = session['username'], dark_theme = session['dark_theme'])
+
 
 @app.route('/register', methods = ('POST', 'GET'))
 def register():
+    if 'dark_theme' not in session:
+        session['dark_theme'] = False
+
     if request.method == 'POST':
         user = Users(username = request.form['username'], password = request.form['password'])
         try:
@@ -39,21 +53,25 @@ def register():
             db.session.commit()
         except:
             flash('Такой пользователь уже существует.')
-            return render_template('register.html')
+            return render_template('register.html', dark_theme = session['dark_theme'])
         session['username'] = user.username
         session['user_id'] = user.id
         return redirect(url_for('index'))
 
-    return render_template('register.html')
+    return render_template('register.html', dark_theme = session['dark_theme'])
+
 
 @app.route('/login', methods = ('POST', 'GET'))
 def login():
+    if 'dark_theme' not in session:
+        session['dark_theme'] = False
+
     if request.method == 'POST':
         if request.form.get('submit'):
             user = Users.query.filter_by(username=request.form['username']).first()
             if user is None:
                 flash('Такого пользователя не существует.')
-                return render_template('login.html')
+                return render_template('login.html', dark_theme = session['dark_theme'])
             if request.form['password'] == user.password:
                 session['username'] = request.form['username']
                 session['user_id'] = user.id
@@ -61,13 +79,17 @@ def login():
         elif request.form.get('register'):
             return redirect(url_for('register'))
 
-    return render_template('login.html')
+    return render_template('login.html', dark_theme = session['dark_theme'])
+
 
 @app.route('/edit', methods = ('POST', 'GET'))
 def edit():
     if 'currently_editing' not in session:
         return redirect(url_for('index'))
-    
+
+    if 'dark_theme' not in session:
+        session['dark_theme'] = False
+
     note = Note(id=session['currently_editing'])
     if request.method == 'POST':
 
@@ -77,7 +99,7 @@ def edit():
         
         elif request.form.get('add_user') and request.form.get('username'):     
             if not note.is_owner(session['user_id']):
-                return render_template('edit.html', title = note.get_title(), text = note.get_text())
+                return render_template('edit.html', title = note.get_title(), text = note.get_text(), dark_theme = session['dark_theme'])
             user = Users.query.filter_by(username=request.form.get('username')).first()
             if user is not None:    
                 if user not in note.get_users() and request.form.get('username') != session['username']:        
@@ -88,7 +110,7 @@ def edit():
             
         elif request.form.get('delete'):
             if not note.is_owner(session['user_id']):
-                return render_template('edit.html', title = note.get_title(), text = note.get_text())
+                return render_template('edit.html', title = note.get_title(), text = note.get_text(), dark_theme = session['dark_theme'])
             session.pop('currently_editing')
             note.delete()
             return redirect(url_for('index'))
@@ -96,7 +118,8 @@ def edit():
         elif request.form.get('text') or request.form.get('title'):
             note.set(title=request.form.get('title'), text=request.form.get('text'))
         
-    return render_template('edit.html', title = note.get_title(), text = note.get_text())
+    return render_template('edit.html', title = note.get_title(), text = note.get_text(), dark_theme = session['dark_theme'])
+
 
 @app.route('/create', methods = ('POST', 'GET'))
 def create():

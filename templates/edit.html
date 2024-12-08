@@ -1,34 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
-    <link type="text/css" href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet">
-</head>
-<body>
-    <div class="content">
-        <form action="" method="post">
-            <div>
-                <textarea name="title" cols="30" rows="1" class="title-textarea">{{ title }}</textarea>
-            </div>
-            <div>
-                <textarea name="text" cols="30" rows="10" class="note-textarea">{{ text }}</textarea>
-            </div>
-            <div>
-                <input type="submit" value="Сохранить" name="save" class="button">
-                <input type="submit" value="Назад" name="return" class="button">
-                <input type="submit" value="Удалить заметку" name="delete" class="button">
-            </div>
-            {% for msg in get_flashed_messages() %}
-            <div class="flash">{{ msg }}</div>
-            {% endfor %}
-            <div>
-                <input type="submit" value="Добавить пользователя" name="add_user" class="button">
-                <input type="text" name="username">
-            </div>
-        </form>
-    </div>
-</body>
-</html>
+{% extends "base.html" %}
+{% block header %}
+{% endblock %}
+{% block content %}
+    <form action="" method="post">
+        <div>
+            <textarea name="title" cols="30" rows="1" class="title-textarea">{{ title }}</textarea>
+        </div>
+        <div>
+            <textarea name="text" cols="30" rows="10" class="note-textarea">{{ text }}</textarea>
+        </div>
+        <div>
+            <input type="submit" value="Сохранить" name="save" class="button">
+            <input type="submit" value="Назад" name="return" class="button">
+            <input type="submit" value="Удалить заметку" name="delete" class="button">
+        </div>
+        {% for msg in get_flashed_messages() %}
+        <div class="flash">{{ msg }}</div>
+        {% endfor %}
+        <div>
+            <input type="submit" value="Добавить пользователя" name="add_user" class="button">
+            <input type="text" name="username">
+        </div>
+    </form>
+{% endblock %}

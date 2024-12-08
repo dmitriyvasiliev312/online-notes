@@ -1,0 +1,36 @@
+body{
+    background-color: rgb(30, 37, 43);
+    color: white;
+}
+
+.header{
+    background-color: rgb(55, 68, 80);
+}
+
+button{
+    background-color: rgb(55, 68, 80);
+    color: white;
+}
+  
+.button{
+    background-color: rgb(55, 68, 80);
+    color: white;
+}
+
+.header-button{
+    background-color: rgb(40, 50, 58);
+    color: white;
+}
+
+.note-text-preview {
+    color: rgb(110, 128, 145);
+  }
+
+input{
+    background-color:  rgb(55, 68, 80);
+    color: white;
+}
+textarea{
+    background-color:  rgb(55, 68, 80);
+    color: white;
+}

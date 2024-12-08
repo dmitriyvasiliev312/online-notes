@@ -1,0 +1,23 @@
+body{
+    background-color: rgba(224, 193, 131, 0.717);
+}
+
+.header{
+    background-color: white;
+}
+
+button{
+    background-color: white;
+}
+  
+.button{
+    background-color: white;
+}
+
+.header-button{
+    background-color: rgb(232, 232, 232);
+}
+
+.note-text-preview {
+    color: rgb(97, 97, 97);
+  }
