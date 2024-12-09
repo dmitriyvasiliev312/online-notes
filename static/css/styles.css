@@ -25,16 +25,29 @@ body{
 
 textarea{
   resize: none;
-  width: 40vw;
-  border: 0;
+  width: 60vw;
+  border: none;
+  outline: none;
+  font-family: "Source Sans 3", sans-serif;
+}
+
+.note-textarea{
+  height: 80vh;
 }
 
 button{
-  border: 0;
+  border: none;
+  outline: none;
 }
 
 .button{
-  border: 0;
+  border: none;
+  outline: none;
+}
+
+input{
+  border: none;
+  outline: none;
 }
 
 .note-text-preview {

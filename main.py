@@ -30,6 +30,7 @@ def index():
         
         elif request.form.get('logout'):
             session.pop('username')
+            session.pop('user_id')
             return redirect(url_for('login'))
         
         else:
@@ -90,12 +91,25 @@ def edit():
     if 'dark_theme' not in session:
         session['dark_theme'] = False
 
+    if 'username' not in session or 'user_id' not in session:
+        return redirect(url_for('login'))
+
     note = Note(id=session['currently_editing'])
     if request.method == 'POST':
 
         if request.form.get('return'):
             session.pop('currently_editing')
             return redirect(url_for('index'))
+
+        elif request.form.get('change-theme'):
+            session['dark_theme'] = not session['dark_theme']
+            user = Users.query.filter_by(username=session['username']).first()
+            return render_template('edit.html', title = note.get_title(), text = note.get_text(), username = session['username'], dark_theme = session['dark_theme'])
+
+        elif request.form.get('logout'):
+            session.pop('username')
+            session.pop('user_id')
+            return redirect(url_for('login'))
         
         elif request.form.get('add_user') and request.form.get('username'):     
             if not note.is_owner(session['user_id']):

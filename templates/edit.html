@@ -1,5 +1,12 @@
 {% extends "base.html" %}
 {% block header %}
+    <div class="header">
+        <div>{{ username }}</div>
+        <form action="" method="post">
+            <input type="submit" value="Выйти из аккаунта" class="button header-button" name="logout">
+            <input type="submit" value="Сменить тему" class="button header-button" name="change-theme">
+        </form>
+    </div>
 {% endblock %}
 {% block content %}
     <form action="" method="post">
