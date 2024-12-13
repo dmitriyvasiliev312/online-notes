@@ -93,12 +93,15 @@ def edit():
 
     if 'username' not in session or 'user_id' not in session:
         return redirect(url_for('login'))
-
+    
     note = Note(id=session['currently_editing'])
+    user = Users.query.filter_by(id=session['user_id']).first()
+    if not (note.is_owner(session['user_id']) or user in note.get_users()):
+        return redirect(url_for('login'))
+
     if request.method == 'POST':
 
         if request.form.get('return'):
-            session.pop('currently_editing')
             return redirect(url_for('index'))
 
         elif request.form.get('change-theme'):
@@ -113,7 +116,7 @@ def edit():
         
         elif request.form.get('add_user') and request.form.get('username'):     
             if not note.is_owner(session['user_id']):
-                return render_template('edit.html', title = note.get_title(), text = note.get_text(), dark_theme = session['dark_theme'])
+                return render_template('edit.html', title = note.get_title(), text = note.get_text(), dark_theme = session['dark_theme'], username = session['username'])
             user = Users.query.filter_by(username=request.form.get('username')).first()
             if user is not None:    
                 if user not in note.get_users() and request.form.get('username') != session['username']:        
@@ -124,7 +127,7 @@ def edit():
             
         elif request.form.get('delete'):
             if not note.is_owner(session['user_id']):
-                return render_template('edit.html', title = note.get_title(), text = note.get_text(), dark_theme = session['dark_theme'])
+                return render_template('edit.html', title = note.get_title(), text = note.get_text(), dark_theme = session['dark_theme'], username = session['username'])
             session.pop('currently_editing')
             note.delete()
             return redirect(url_for('index'))
@@ -132,7 +135,7 @@ def edit():
         elif request.form.get('text') or request.form.get('title'):
             note.set(title=request.form.get('title'), text=request.form.get('text'))
         
-    return render_template('edit.html', title = note.get_title(), text = note.get_text(), dark_theme = session['dark_theme'])
+    return render_template('edit.html', title = note.get_title(), text = note.get_text(), dark_theme = session['dark_theme'], username = session['username'])
 
 
 @app.route('/create', methods = ('POST', 'GET'))
