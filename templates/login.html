@@ -2,15 +2,17 @@
 {% block header %}
 {% endblock %}
 {% block content %}
-    <form action="" method="post">
-        <div>Username:</div><input type="text" name="username" value="" required>
-        <div>Password:</div><input type="password" name="password" value="" required>
-        <p><input type="submit" value="Подтвердить" name="submit"></p>
-    </form>
-    <form action="" method="post">
-        <input type="submit" value="Создать аккаунт" name="register">
-    </form>
-    {% for msg in get_flashed_messages() %}
-        <div class="flash">{{ msg }}</div>
-    {% endfor %}
+    <div class="content-login">
+        <form action="" method="post">
+            <div>Username:</div><input type="text" name="username" value="" required>
+            <div>Password:</div><input type="password" name="password" value="" required>
+            <p><input type="submit" value="Подтвердить" name="submit"></p>
+        </form>
+        <form action="" method="post">
+            <input type="submit" value="Создать аккаунт" name="register">
+        </form>
+        {% for msg in get_flashed_messages() %}
+            <div class="flash">{{ msg }}</div>
+        {% endfor %}
+    </div>
 {% endblock %}
